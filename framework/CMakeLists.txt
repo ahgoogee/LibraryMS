@@ -18,3 +18,6 @@ target_include_directories(${MODULE_NAME} PUBLIC include)
 #导入libhv
 find_package(libhv CONFIG REQUIRED)
 target_link_libraries(${MODULE_NAME} PUBLIC hv)
+
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(${MODULE_NAME} PUBLIC spdlog::spdlog_header_only)

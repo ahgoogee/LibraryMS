@@ -1,11 +1,20 @@
 //
 // Created by ahgoogee on 2023/12/4.
 //
-#include "framework/application.h"
 
 #include "iostream"
+#include "framework/application.h"
+#include "framework/router.h"
 
-void framework::Application::start() {
-    std::cout << "Hello World" << std::endl;
+namespace framework{
+    void Application::run(uint16_t port) {
+        Router::Register(m_http_service);
+        m_http_server.registerHttpService(&m_http_service);
+        m_http_server.port = {port};
+
+        m_http_server.run();
+    }
+
+
 }
 

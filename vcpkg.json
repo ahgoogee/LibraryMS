@@ -9,5 +9,8 @@
   }, {
     "name" : "rocksdb",
     "version>=" : "8.5.3"
+  }, {
+    "name" : "spdlog",
+    "version>=" : "1.12.0"
   } ]
 }
