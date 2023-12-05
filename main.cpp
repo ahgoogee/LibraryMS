@@ -3,11 +3,12 @@
 //
 
 #include "framework/application.h"
-#include "spdlog/spdlog.h"
+#include "common/logger.h"
 
 int main(){
-    spdlog::set_level(spdlog::level::trace);
-    auto app = framework::Application();
-    app.run();
+    common::logger log = common::create_logger();
+
+    auto app = framework::Application(log);
+    app.run(8080); //阻塞运行
     return 0;
 }

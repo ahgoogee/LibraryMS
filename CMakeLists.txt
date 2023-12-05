@@ -16,14 +16,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 #添加子项目
+add_subdirectory(common)
 add_subdirectory(framework)
-
 
 #添加编译目标
 add_executable(${PROJECT_NAME} main.cpp)
 
-find_package(spdlog CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog_header_only)
-
 #链接子模块
+target_link_libraries(framework PUBLIC common)
+target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE framework)
+
+

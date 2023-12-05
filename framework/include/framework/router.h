@@ -3,13 +3,24 @@
 //
 
 #pragma once
+
 #include "hv/HttpService.h"
+#include "common/logger.h"
 
 namespace framework{
+
+    /**
+     * 路由注册类
+     * */
     class Router
     {
     public:
-        static void Register(hv::HttpService& router);
+        /**
+         * 为hv::HttpService注入服务
+         * @param router 服务表
+         * @param log 使用的日志对象
+         * */
+        static void Register(hv::HttpService &router, common::logger log);
     };
 }
 

@@ -1,4 +1,4 @@
-set(MODULE_NAME framework)
+set(MODULE_NAME common)
 message("Build module ${MODULE_NAME}:")
 
 message(STATUS "Enable build test")
@@ -15,9 +15,6 @@ add_library(${MODULE_NAME} STATIC ${srcs})
 #导入头文件信息
 target_include_directories(${MODULE_NAME} PUBLIC include)
 
-#导入libhv
-find_package(libhv CONFIG REQUIRED)
-target_link_libraries(${MODULE_NAME} PUBLIC hv)
-
-#find_package(spdlog CONFIG REQUIRED)
-#target_link_libraries(${MODULE_NAME} PUBLIC spdlog::spdlog_header_only)
+#导入第三方库
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(${MODULE_NAME} PUBLIC spdlog::spdlog_header_only)
