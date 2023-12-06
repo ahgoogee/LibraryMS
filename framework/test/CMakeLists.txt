@@ -4,7 +4,8 @@ add_executable(soci_use_test soci_use_test.cpp)
 
 target_link_libraries(http_server_test framework)
 target_link_libraries(soci_use_test framework)
-file(COPY ${CMAKE_HOME_DIRECTORY}/mysql/lib/libmysql.dll DESTINATION .)
+include(../cmake/copy_dll.cmake)
+copy_dll(${CMAKE_HOME_DIRECTORY}/mysql/lib/libmysql.dll)
 
 add_test(HttpServerTest http_server_test)
 add_test(SociUseTest soci_use_test)

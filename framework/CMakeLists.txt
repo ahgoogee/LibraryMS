@@ -6,6 +6,7 @@ enable_testing()
 #添加测试文件夹
 add_subdirectory(test)
 
+include(cmake/copy_dll.cmake)
 #添加findXXX.cmake搜索路径
 #set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_LIST_DIR}/cmake")
 
@@ -23,8 +24,8 @@ set(MYSQL_ROOT_DIR ${CMAKE_HOME_DIRECTORY}/mysql)
 target_include_directories(${MODULE_NAME} PUBLIC ${MYSQL_ROOT_DIR}/include)
 target_link_directories(${MODULE_NAME} PUBLIC ${MYSQL_ROOT_DIR}/lib)
 target_link_libraries(${MODULE_NAME} PUBLIC libmysql mysqlclient)
-file(COPY ${MYSQL_ROOT_DIR}/lib/libmysql.dll DESTINATION .)
-
+set(MYSQL_DLL ${MYSQL_ROOT_DIR}/lib/libmysql.dll)
+copy_dll(${MYSQL_DLL})
 
 #导入libhv
 find_package(libhv CONFIG REQUIRED)
