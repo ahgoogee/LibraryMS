@@ -10,7 +10,7 @@ endif ()
 
 
 #配置c++语言设置
-set(CMAKE_CXX_STANDARD 11)          # 使用C++ 11 标准
+set(CMAKE_CXX_STANDARD 14)          # 使用C++ 14 标准
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
