@@ -66,7 +66,7 @@ set_target_properties(SOCI::soci_core_static PROPERTIES
 add_library(SOCI::soci_mysql_static STATIC IMPORTED)
 
 set_target_properties(SOCI::soci_mysql_static PROPERTIES
-  INTERFACE_LINK_LIBRARIES "C:/Program Files/MySQL/MySQL Connector C 6.1/lib/libmysql.lib"
+  INTERFACE_LINK_LIBRARIES "${CMAKE_HOME_DIRECTORY}/mysql/lib/libmysql.lib"
 )
 
 if(CMAKE_VERSION VERSION_LESS 2.8.12)
