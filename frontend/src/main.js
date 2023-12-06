@@ -8,6 +8,7 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes,
 })
+router.replace('/login').then()
 
 const app = createApp(App)
 app.use(router)
