@@ -10,7 +10,7 @@ endif ()
 
 
 #配置c++语言设置
-set(CMAKE_CXX_STANDARD 14)          # 使用C++ 14 标准
+set(CMAKE_CXX_STANDARD 17)          # 使用C++ 17 标准
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -27,4 +27,7 @@ target_link_libraries(framework PUBLIC common)
 target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE framework)
 
+#复制dll文件
+include(framework/cmake/copy_dll.cmake)
+copy_dll(${CMAKE_HOME_DIRECTORY}/mysql/lib/libmysql.dll)
 

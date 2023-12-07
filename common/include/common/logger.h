@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "cstringr.h"
+#include "common/uitls/cstringr.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 //#include "spdlog/sinks/rotating_file_sink.h"
@@ -11,14 +11,14 @@
 
 namespace common{
     /**
-     * std::shared_ptr<spdlog::logger>的简写
+     * std::shared_ptr<spdlog::logger_ptr>的简写
      * */
-    using logger = std::shared_ptr<spdlog::logger>;
+    using logger_ptr = std::shared_ptr<spdlog::logger>;
 
     /**
      * 创建默认日志对象,无文件输出,同步
      * */
-    static logger create_logger(){
+    static logger_ptr create_logger(){
         return {spdlog::default_logger()};
     }
 
@@ -28,7 +28,7 @@ namespace common{
      * @logger_output_directory: 输出日志文件位置
      * @is_async: 是否异步,默认否
      * */
-    static logger create_logger(
+    static logger_ptr create_logger(
             cstringr logger_filename,
             cstringr logger_output_directory,
             bool is_async = false){

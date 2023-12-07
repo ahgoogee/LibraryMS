@@ -6,7 +6,7 @@
 #include "common/logger.h"
 
 int main(){
-    common::logger log = common::create_logger();
+    common::logger_ptr log = common::create_logger();
 
     auto app = framework::Application(log);
     app.run(8080); //阻塞运行

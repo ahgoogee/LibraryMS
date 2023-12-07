@@ -1,7 +1,6 @@
 
 function(copy_dll DLL_FILENAME)
-    string(REGEX MATCH "Visual Studio" IS_MSBUILD_GENERATOR "${CMAKE_GENERATOR}")
-    if(NOT ${IS_MSBUILD_GENERATOR})
+    if("${CMAKE_GENERATOR}" MATCHES "Visual Studio")
         # if (CMAKE_BUILD_TYPE STREQUAL "Release")
             file(COPY ${DLL_FILENAME} DESTINATION Release)
             message(STATUS "Copy ${DLL_FILENAME} to ${CMAKE_CURRENT_BINARY_DIR}/Release")

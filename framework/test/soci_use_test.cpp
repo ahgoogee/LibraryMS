@@ -7,6 +7,7 @@
 #include "soci/mysql/soci-mysql.h"
 #include "string"
 #include <exception>
+#include <algorithm>
 
 int main(){
     using namespace soci;
@@ -23,6 +24,8 @@ int main(){
                 use(first_name), use(last_name);
         int64_t id;
         sql.get_last_insert_id("Person", id);
+
+
     }
     catch( std::exception& e ){
         std::cout << e.what();

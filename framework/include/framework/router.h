@@ -6,6 +6,7 @@
 
 #include "hv/HttpService.h"
 #include "common/logger.h"
+#include "application.h"
 
 namespace framework{
 
@@ -20,7 +21,7 @@ namespace framework{
          * @param router 服务表
          * @param log 使用的日志对象
          * */
-        static void Register(hv::HttpService &router, common::logger log);
+        static void Register(hv::HttpService &router, framework::Application &app);
     };
 }
 

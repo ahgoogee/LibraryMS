@@ -24,8 +24,7 @@ set(MYSQL_ROOT_DIR ${CMAKE_HOME_DIRECTORY}/mysql)
 target_include_directories(${MODULE_NAME} PUBLIC ${MYSQL_ROOT_DIR}/include)
 target_link_directories(${MODULE_NAME} PUBLIC ${MYSQL_ROOT_DIR}/lib)
 target_link_libraries(${MODULE_NAME} PUBLIC libmysql mysqlclient)
-set(MYSQL_DLL ${MYSQL_ROOT_DIR}/lib/libmysql.dll)
-copy_dll(${MYSQL_DLL})
+
 
 #导入libhv
 find_package(libhv CONFIG REQUIRED)

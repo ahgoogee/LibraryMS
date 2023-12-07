@@ -4,10 +4,9 @@
 
 #pragma once
 
-namespace framework{
-    namespace entity{
+#include "framework/entity/column.h"
+#include "string"
 
+#define TABLE(name) constexpr static const char * table = #name
+#define PK(name)    constexpr static const char * pk = #name
 
-
-    }
-}

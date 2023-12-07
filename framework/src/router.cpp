@@ -4,16 +4,19 @@
 
 #include "framework/router.h"
 #include "hv/hasync.h"
-#include "framework/service/user_service.h"
+#include "framework/service/person_service.h"
+#include "framework/application.h"
 
 using namespace common;
 
-void framework::Router::Register(hv::HttpService &router, logger log) {
+void framework::Router::Register(hv::HttpService &router, Application &app) {
+    common::logger_ptr log = app.log;
+
     /**
      *  /echo
      *  原样返回http请求body
      * */
-    router.POST("/echo", [&log](const HttpContextPtr& ctx) {
+    router.POST("/echo", [](const HttpContextPtr& ctx) {
 
 
         hv::async([ctx](){
@@ -22,10 +25,10 @@ void framework::Router::Register(hv::HttpService &router, logger log) {
         return 0;
     });
 
-    service::user_service::register_service(router);
+    service::person_service::register_service(router,app);
 
 
-    router.middleware.emplace_back([&log](const HttpContextPtr & ctx)->int{
+    router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
         log->info("/-------------------------\\");
         log->info("source :{}:{}",ctx->ip(),ctx->port());
         log->info("method :{}",http_method_str(ctx->method()));

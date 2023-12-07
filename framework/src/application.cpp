@@ -4,14 +4,20 @@
 
 #include "framework/application.h"
 #include "framework/router.h"
+#include "exception"
 
 namespace framework{
     void Application::run(uint16_t port) {
-        Router::Register(m_http_service, log);
+        Router::Register(m_http_service, *this);
 
         m_http_server.registerHttpService(&m_http_service);
         m_http_server.port = {port};
-        m_http_server.run();
+        try{
+            m_http_server.run();
+        }
+        catch (std::exception e){
+            log->error(e.what());
+        }
     }
 
 
