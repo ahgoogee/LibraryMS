@@ -5,62 +5,65 @@
 #pragma once
 
 #include <utility>
-#include "framework/common/i_json_serializable.h"
+#include "soci/soci.h"
 #include "soci/mysql/soci-mysql.h"
-#include "soci/values.h"
+#include "framework/entity/entity.h"
 
 
 namespace framework::entity{
-    struct person{
+    struct user{
     public:
-        TABLE(person);
+        TABLE(user);
         PK(id);
-        uint64_t id;
-        std::string first_name;
-        std::string last_name;
+        COLUMN(id,db_bigint);
+        COLUMN(first_name,db_varchar);
+        COLUMN(last_name,db_varchar);
 
-        person() = default;
+        user() = default;
 
-        person(common::cstringr firstName, common::cstringr lastName)
-        : first_name(firstName),last_name(lastName) {}
+        user(const db_varchar &mFirstName, const db_varchar &mLastName)
+        : m_first_name(mFirstName),m_last_name(mLastName)
+        {}
 
-        person(uint64_t id, common::cstringr firstName, common::cstringr lastName)
-        : id(id), first_name(firstName),last_name(lastName) {}
+        user(db_bigint mId, const db_varchar &mFirstName, const db_varchar &mLastName)
+        : m_id(mId),m_first_name(mFirstName),m_last_name(mLastName)
+        {}
 
-        friend void to_json(hv::Json& j, const person& p) {
+        friend void to_json(hv::Json& j, const user& p) {
             j = {
-                    {"id",p.id},
-                    {"first_name", p.first_name},
-                    {"last_name", p.last_name}
+                    {"id",p.get_id()},
+                    {"first_name", p.get_first_name()},
+                    {"last_name", p.get_last_name()}
             };
         }
-
-        friend void from_json(const hv::Json& j, person& p) {
-            j.at("id").get_to(p.id);
-            j.at("first_name").get_to(p.first_name);
-            j.at("last_name").get_to(p.last_name);
+        friend void from_json(const hv::Json& j, user& p) {
+            j.at("id").get_to(p.m_id);
+            j.at("first_name").get_to(p.m_first_name);
+            j.at("last_name").get_to(p.m_last_name);
         }
     };
 }
 namespace soci{
-    template <>
-    struct type_conversion<framework::entity::person> {
+    template<>
+    struct type_conversion<framework::entity::user>{
         typedef values base_type;
 
-        static void from_base(values const &v, indicator const &ind, framework::entity::person &p) {
+        static void from_base(values const &v, indicator const &ind, framework::entity::user &p) {
             if (ind == i_ok) {
-                p.id = v.get<int64_t>("id");
-                p.first_name = v.get<std::string>("first_name");
-                p.last_name = v.get<std::string>("last_name");
+                p.set_id(v.get<int64_t>("id"));
+                p.set_first_name(v.get<std::string>("first_name"));
+                p.set_last_name(v.get<std::string>("last_name"));
             }
         }
 
-        static void to_base(framework::entity::person const &p, values &v, indicator &ind) {
-            v.set("id", p.id);
-            v.set("first_name", p.first_name);
-            v.set("last_name", p.last_name);
+        static void to_base(framework::entity::user const &p, values &v, indicator &ind) {
+            v.set("id", p.get_id());
+            v.set("first_name", p.get_first_name());
+            v.set("last_name", p.get_last_name());
             ind = i_ok;
-
         }
     };
+
+
+
 }

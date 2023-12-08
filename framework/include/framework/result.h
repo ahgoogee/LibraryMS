@@ -36,11 +36,31 @@ namespace framework{
         static result<DataTy> ok(const DataTy& data){
             return result<DataTy>{200,"Success",true,data};
         }
+
+        static result<void> error(int code,common::cstringr msg){
+            return result<void>{code,msg,false};
+        }
+
+
     };
+    template<>
+    struct result<void> {
+    public:
+        int code{};
+        std::string msg;
+        bool is_success{};
 
+        result(int code, std::string msg, bool is_success)
+                : code(code), msg(std::move(msg)), is_success(is_success) {}
 
-
-
+        hv::Json to_json() const &{
+            return {
+                    {"code",       code},
+                    {"msg",        msg},
+                    {"is_success", is_success}
+            };
+        }
+    };
 
 
 }

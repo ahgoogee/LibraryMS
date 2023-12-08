@@ -90,11 +90,11 @@ public:
 
     // Support for custom logging of database operations.
 
-    // Set the custom logger_ptr to use.
+    // Set the custom logger to use.
     void set_logger(logger const & logger);
 
-    // Return the currently used logger_ptr, by default, this is an instance of a
-    // standard SOCI logger_ptr.
+    // Return the currently used logger, by default, this is an instance of a
+    // standard SOCI logger.
     logger const & get_logger() const;
 
 

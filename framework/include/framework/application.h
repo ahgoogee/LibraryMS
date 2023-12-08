@@ -11,6 +11,7 @@
 #include "common/logger.h"
 #include "soci/session.h"
 #include "soci/mysql/soci-mysql.h"
+#include "framework/common/types.h"
 
 namespace framework{
     /**
@@ -28,6 +29,7 @@ namespace framework{
         :log(std::move(_log))
         {
             try {
+                /*NOTE:移除了服务器ssl验证并指定test数据库root用户使用native密码验证通过才链接成功*/
                 sql = std::make_shared<soci::session>(soci::mysql, "host=61.139.65.141 port=10390 dbname=test user=root password=123456");
             }
             catch (std::exception e){
@@ -39,7 +41,7 @@ namespace framework{
         void run(uint16_t port = 8080);
 
         common::logger_ptr log;
-        std::shared_ptr<soci::session> sql;
+        type::dbsession_ptr sql;
     private:
         hv::HttpServer  m_http_server;
         hv::HttpService m_http_service;
