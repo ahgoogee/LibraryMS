@@ -14,6 +14,9 @@ set(CMAKE_CXX_STANDARD 17)          # 使用C++ 17 标准
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+#添加配置文件
+include(cmake/copy_file.cmake)
+copy_file(${CMAKE_CURRENT_LIST_DIR}/libraryms.toml)
 
 #添加子项目
 add_subdirectory(common)
@@ -28,6 +31,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE common)
 target_link_libraries(${PROJECT_NAME} PRIVATE framework)
 
 #复制dll文件
-include(framework/cmake/copy_dll.cmake)
-copy_dll(${CMAKE_HOME_DIRECTORY}/mysql/lib/libmysql.dll)
+copy_file(${CMAKE_HOME_DIRECTORY}/mysql/lib/libmysql.dll)
 

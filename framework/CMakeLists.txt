@@ -6,7 +6,7 @@ enable_testing()
 #添加测试文件夹
 add_subdirectory(test)
 
-include(cmake/copy_dll.cmake)
+include(${CMAKE_HOME_DIRECTORY}/cmake/copy_file.cmake)
 #添加findXXX.cmake搜索路径
 #set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_LIST_DIR}/cmake")
 

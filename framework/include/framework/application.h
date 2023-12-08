@@ -25,12 +25,13 @@ namespace framework{
      * */
     class Application{
     public:
-        explicit Application(common::logger_ptr _log = common::create_logger())
+        explicit Application(common::cstringr db_string,common::logger_ptr _log = common::create_logger())
         :log(std::move(_log))
         {
             try {
+                log->trace("Mysql connect string:\"{}\"",db_string);
                 /*NOTE:移除了服务器ssl验证并指定test数据库root用户使用native密码验证通过才链接成功*/
-                sql = std::make_shared<soci::session>(soci::mysql, "host=61.139.65.141 port=10390 dbname=test user=root password=123456");
+                sql = std::make_shared<soci::session>(soci::mysql, db_string);
             }
             catch (std::exception e){
                 log->error("mysql error:{}",e.what());
