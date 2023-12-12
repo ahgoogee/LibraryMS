@@ -58,6 +58,9 @@
 </template>
 <script setup>
 import {reactive, computed, onBeforeMount, inject} from 'vue';
+import cache from '@/common/cache.js'
+import router from '@/router.js'
+import request from "@/request.js";
 
 const formState = reactive({
   username: '',
@@ -68,7 +71,11 @@ const formState = reactive({
 const onLogin = values => {
   console.log('Success:', values);
   //如果选择了remember,那么token的存储时间为永久
-
+  request.post("/login",{
+    "username":formState.username,
+    "password":formState.password,
+    "userType":formState.userType
+  })
 
 
 };
@@ -83,16 +90,13 @@ const onForgotPassword = ()=>{
 
 }
 onBeforeMount(()=>{
-  // const $cookies = inject('$cookies');
-  // let test = $cookies.get("test")
-  // let userType = this.$cookies.get("UserType")
-  // let token = this.$cookies.get("Token")
-  // if(userType&&token){
-  //   //用户已登录
-  //
-  //   this.router.push("/hello")
-  // }
-  // this.router.push("/hello")
+  let userType = cache.getCache("userType")
+  let token = cache.getCache("Token")
+  if(userType&&token){
+    //用户已登录
+
+    router.push("/hello")
+  }
 })
 
 

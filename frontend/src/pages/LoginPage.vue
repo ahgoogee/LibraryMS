@@ -1,5 +1,5 @@
 <script setup>
-import LoginInputBox from "../components/LoginInputBox.vue";
+import LoginInputBox from "@/components/LoginInputBox.vue";
 </script>
 
 <template>
