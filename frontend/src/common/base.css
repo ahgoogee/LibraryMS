@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* user-select: none; */
+}
+
+::-webkit-scrollbar {
+  width: 8PX; /* 滚动条宽度， width：对应竖滚动条的宽度  height：对应横滚动条的高度*/
+  height: 8Px;
+  background: #ffffff;
+}
+
+/*定义滑块 样式*/
+::-webkit-scrollbar-thumb {
+  border-radius: 2PX;
+
+  /*滚动条滑块长度 */
+  /* height: 10PX;  */
+  background-color: rgba(0, 0, 0, 0.2);
+}
+img {
+  -webkit-user-drag: none;
+  width: auto;
+  height: auto;
+}
+
+input{
+  padding-left: 16px;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #289cf8;
+}
+
+input:invalid {
+  outline: 1px solid red;
+}
+
+button {
+  outline: none;
+  border: 0;
+  background-color: #289cf8;
+  color: white;
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+body,
+ul,
+ol,
+li,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+fieldset,
+table,
+td,
+img,
+div {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+body {
+  background: #fff;
+  color: #303133;
+  /* font-size: 12px; */
+}
+ul,
+ol {
+  list-style: none;
+}
+select,
+input,
+img,
+select {
+  vertical-align: middle;
+}
+
+h1 {
+  font-size: 24px;
+}
+/* 定义 markdown 图片放大的样式 */
+.medium-zoom--opened .medium-zoom-overlay {
+  z-index: 999;
+}
+.medium-zoom--opened img {
+  z-index: 1000;
+}
