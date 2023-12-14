@@ -34,3 +34,7 @@ target_link_libraries(${MODULE_NAME} PUBLIC hv)
 set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};${CMAKE_HOME_DIRECTORY}/soci/")
 find_package(SOCI CONFIG REQUIRED)
 target_link_libraries(${MODULE_NAME} PUBLIC SOCI::soci_core_static  SOCI::soci_mysql_static)
+
+#导入cppcodec
+find_path(CPPCODEC_INCLUDE_DIRS "cppcodec/base32_crockford.hpp")
+target_include_directories(${MODULE_NAME} PUBLIC ${CPPCODEC_INCLUDE_DIRS})

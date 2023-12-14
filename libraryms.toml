@@ -4,7 +4,7 @@ export_port = 8080
 [backend.mysql]
 host = "61.139.65.141"
 port = 10390
-dbname = "test"
+dbname = "libraryms_db"
 user = "root"
 password = "123456"
 

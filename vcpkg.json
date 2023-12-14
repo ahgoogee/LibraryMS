@@ -9,5 +9,8 @@
   }, {
     "name" : "spdlog",
     "version>=" : "1.12.0"
+  }, {
+    "name" : "cppcodec",
+    "version>=" : "0.2#4"
   } ]
 }

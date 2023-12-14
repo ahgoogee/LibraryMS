@@ -32,6 +32,9 @@ namespace framework::service{
                     ctx->sendJson(error.to_json());
                 }
 
+                //释放local_map
+                common::local_map::release();
+
                 return 0;
             });
         }
@@ -49,6 +52,10 @@ namespace framework::service{
                     result<void> error{40000,fmt::format("未知错误:{}",e.what()),false};
                     ctx->sendJson(error.to_json());
                 }
+
+                //释放local_map
+                common::local_map::release();
+
                 return 0;
             });
         }
