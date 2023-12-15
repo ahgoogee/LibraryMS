@@ -42,7 +42,7 @@ namespace framework{
         void run(uint16_t port = 8080);
 
         common::logger_ptr log;
-        type::dbsession_ptr sql;
+        common::type::dbsession_ptr sql;
     private:
         hv::HttpServer  m_http_server;
         hv::HttpService m_http_service;

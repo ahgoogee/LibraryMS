@@ -11,6 +11,8 @@
 #include "framework/common/runtime_exception.h"
 
 namespace framework::service{
+    using namespace common;
+
     class service{
     private:
         hv::HttpService &m_router;

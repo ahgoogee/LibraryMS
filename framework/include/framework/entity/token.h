@@ -8,8 +8,8 @@
 
 namespace framework::entity{
     struct token{
-        type::db_bigint user_id;
-        type::db_varchar username;
+        common::type::db_bigint user_id;
+        common::type::db_varchar username;
         std::string usertype;
 
     public:

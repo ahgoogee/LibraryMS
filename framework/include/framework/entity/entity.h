@@ -11,7 +11,7 @@
 #include "corecrt_wtime.h"
 #include "hv/http_content.h"
 
-using namespace framework::type;
+using namespace common::type;
 
 #define CONSTEXPR_STRING(name,str) public: constexpr static const char * name = str
 #define TABLE(name) CONSTEXPR_STRING(table_name,#name)

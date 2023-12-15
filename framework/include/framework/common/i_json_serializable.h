@@ -7,7 +7,7 @@
 #include "common/utils.h"
 #include "hv/http_content.h"
 
-namespace framework{
+namespace common{
     /**
      * json序列化接口
      * */

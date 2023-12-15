@@ -42,6 +42,10 @@ namespace framework::entity{
 
         }
     };
+
+    struct admin_ro{
+        db_varchar username;
+    };
 }
 namespace soci{
     using namespace framework::entity;

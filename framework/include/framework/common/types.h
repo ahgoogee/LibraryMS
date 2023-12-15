@@ -6,7 +6,7 @@
 #include "soci/soci.h"
 #include "memory"
 
-namespace framework::type{
+namespace common::type{
     using dbsession_ptr = std::shared_ptr<soci::session>;
 
     using db_float = double_t;

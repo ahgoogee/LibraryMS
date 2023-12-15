@@ -7,7 +7,7 @@
 #include <exception>
 #include "framework/result.h"
 
-namespace framework{
+namespace common{
     class runtime_exception:public std::exception{
     public:
         int code;
