@@ -1,4 +1,4 @@
 export default {
-    "serviceBaseUrl":"http://localhost",
-    "servicePath":"/api"
+    "serviceBaseUrl":"http://localhost:8080",
+    "servicePath":""
 }

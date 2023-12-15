@@ -4,7 +4,7 @@ import {reactive} from "vue";
 
 const userInfo = reactive({
   username: 'ahgoogee',
-  userType: 'user',
+  usertype: 'user',
 
 })
 
@@ -24,7 +24,7 @@ const logout = ()=>{
 
     <!--用户信息区-->
     <div class="h-userinfo-box flex space-around align-center">
-      <div style="margin-right: 20px">{{userInfo.userType}}</div>
+      <div style="margin-right: 20px">{{userInfo.usertype}}</div>
       <a-popover :title="userInfo.username" placement="bottomLeft">
         <template #content>
           <p>userinfo</p>

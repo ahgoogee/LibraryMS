@@ -6,8 +6,6 @@ import AddUserPage from "@/pages/user/AddUserPage.vue";
 import RouterRedirect from "@/pages/RouterRedirect.vue";
 import HelloWorld from "@/pages/HelloWorld.vue";
 
-const EmptySlot = {template:'<RouterView/>'}
-
 const routes = [
     {
         path: '/login',

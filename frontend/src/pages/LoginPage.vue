@@ -8,6 +8,7 @@ import LoginInputBox from "@/components/LoginInputBox.vue";
 
 <style scoped lang="less">
   .lp-login-box{
+    position: absolute;
     left: 50%;
     top: 30%;
     transform: translate(-50%,-50%);

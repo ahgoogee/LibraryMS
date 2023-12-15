@@ -2,6 +2,7 @@ import axios from 'axios'
 import cache from '@/common/cache.js'
 import { message } from 'ant-design-vue'
 import config from '@/config.js'
+import router from "@/router.js";
 
 const instance = axios.create({
     // baseURL 将自动加在 url`前面，除非 url 是一个绝对 URL。
@@ -21,7 +22,7 @@ instance.interceptors.request.use(
     config => {
         let token = cache.getCache("Token")
         if(token){
-            config.headers.Authorization = token
+            config.headers.set("Token",token)
         }
 
         return config
@@ -34,11 +35,10 @@ instance.interceptors.request.use(
 // http response 响应拦截器
 instance.interceptors.response.use(
     response => {
-        // 这里对响应的数据做了操作，大家可以自己设置响应过滤哦，下面会给出具体代码
-        return handleData(response.data)
+        handleData(response.data)
+        return response;
     },
     error => {
-        // 错误信息需要和后端进行协调，然后去配合设置啦
 
     })
 
@@ -47,6 +47,18 @@ function generateUrl (url) {
 }
 
 const handleData = result=>{
+    if(result.code === 200) {
+        console.log(`response:${result}`)
+        return;
+    }
+
+    switch (result.code){
+        case 501:
+        case 502:
+            // 未登录,跳转到登录页
+            router.push("/login").then()
+            break;
+    }
 
 }
 
