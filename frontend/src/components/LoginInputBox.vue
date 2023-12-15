@@ -61,6 +61,7 @@ import {reactive, computed, onBeforeMount, inject} from 'vue';
 import cache from '@/common/cache.js'
 import router from '@/router.js'
 import request from "@/request.js";
+import {message} from "ant-design-vue";
 
 const formState = reactive({
   username: '',
@@ -71,14 +72,18 @@ const formState = reactive({
 const onLogin = async values => {
   console.log('Submit:', values);
   //如果选择了remember,那么token的存储时间为永久
-  await request.post("/login",{
+  let res = await request.post("/login",{
     "username":formState.username,
     "password":formState.password,
     "usertype":formState.usertype
-  }).then(res=>{
-    console.log(`res:${res}`)
   })
-
+  if(res.data['is_success']) {
+    cache.setCache("Token", res.data['data'])
+    await router.push("/page/user")
+  }
+  else {
+    message.error(res.data['msg']);
+  }
 
 };
 const onLoginFailed = errorInfo => {

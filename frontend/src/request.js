@@ -34,9 +34,8 @@ instance.interceptors.request.use(
 
 // http response 响应拦截器
 instance.interceptors.response.use(
-    response => {
-        handleData(response.data)
-        return response;
+    async response => {
+        return await handleData(response);
     },
     error => {
 
@@ -46,20 +45,23 @@ function generateUrl (url) {
     return config.serviceBaseUrl + config.servicePath + url
 }
 
-const handleData = result=>{
-    if(result.code === 200) {
-        console.log(`response:${result}`)
-        return;
-    }
+const handleData = async response=>{
+    console.log('response:')
+    console.log(response)
 
-    switch (result.code){
-        case 501:
-        case 502:
+    if(response.status >= 200 && response.status < 300) return response;
+
+    switch (response.status){
+        case 401:
             // 未登录,跳转到登录页
-            router.push("/login").then()
+            if(router.currentRoute.value.path !== '/login')
+                await router.push("/login")
             break;
     }
 
+
+
+    return {data:{is_success:false}};
 }
 
 function handleError (error) {
