@@ -30,11 +30,13 @@ void framework::Router::Register(hv::HttpService &router, Application &app) {
 
     service::user_service::register_service(router, app);
 
-    router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
-        /// cors中间件
-        ctx->response->headers["Access-Control-Allow-Origin"]="*";
-        ctx->response->headers["Access-Control-Allow-Headers"]="Content-Type,Access-Token";
-    });
+    router.AllowCORS();
+
+//    router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
+//        /// cors中间件
+//        ctx->response->headers["Access-Control-Allow-Origin"]="*";
+//        ctx->response->headers["Access-Control-Allow-Headers"]="Content-Type,Access-Token";
+//    });
 
     router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
         /// token 认证中间件S
@@ -59,7 +61,7 @@ void framework::Router::Register(hv::HttpService &router, Application &app) {
         }
         catch (const std::exception& e){
             log->error("auth error:{}",e.what());
-            return HTTP_STATUS_BAD_REQUEST;
+            return HTTP_STATUS_UNAUTHORIZED;
         }
         return HTTP_STATUS_NEXT;
     });
