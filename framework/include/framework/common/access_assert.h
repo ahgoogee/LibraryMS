@@ -4,7 +4,7 @@
 
 #pragma once
 #include "common/utils/local_map.h"
-#include "framework/entity/token.h"
+#include "framework/pojo/token.h"
 #include "common/utils/cstringr.h"
 #include "runtime_exception.h"
 

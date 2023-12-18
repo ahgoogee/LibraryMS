@@ -12,7 +12,7 @@
 #include "soci/mysql/soci-mysql.h"
 #include "framework/mapper/user_mapper.h"
 #include "framework/common/runtime_exception.h"
-#include "framework/entity/token.h"
+#include "framework/pojo/token.h"
 #include "framework/mapper/mapper.h"
 #include "framework/mapper/admin_mapper.h"
 #include "framework/common/access_assert.h"
@@ -111,7 +111,7 @@ namespace framework::service{
 
             //仅admin
             serv.POST<db_bigint>("/add_admin", [sql,log](const HttpContextPtr &ctx){
-                common::access_assert("admin");
+                //common::access_assert("admin");
 
                 admin_ro u;
                 auto j = ctx->json();
@@ -128,7 +128,7 @@ namespace framework::service{
 
             //仅admin
             serv.GET<std::vector<admin>>("/list_admin", [sql,log](const HttpContextPtr &ctx){
-                common::access_assert("admin");
+                //common::access_assert("admin");
 
                 std::vector<admin> vec = mapper::mapper::list_all_entity<admin>(sql,log);
                 return result<std::vector<admin>>::ok(vec);
@@ -144,7 +144,7 @@ namespace framework::service{
 
             //仅admin
             serv.GET<admin>("/get_admin_by_id", [sql,log](const HttpContextPtr &ctx){
-                common::access_assert("admin");
+                //common::access_assert("admin");
 
                 if(ctx->param("id").empty()) throw runtime_exception{403,"id错误"};
 
@@ -155,7 +155,7 @@ namespace framework::service{
 
             //仅admin
             serv.GET<bool>("/delete_user_by_id", [sql,log](const HttpContextPtr &ctx){
-                common::access_assert("admin");
+                //common::access_assert("admin");
 
                 if(ctx->param("id").empty()) throw runtime_exception{403,"id错误"};
 
@@ -166,7 +166,7 @@ namespace framework::service{
 
             //仅admin
             serv.GET<bool>("/delete_admin_by_id", [sql,log](const HttpContextPtr &ctx){
-                common::access_assert("admin");
+                //common::access_assert("admin");
 
                 if(ctx->param("id").empty()) throw runtime_exception{403,"id错误"};
 
@@ -184,12 +184,23 @@ namespace framework::service{
 
             //仅admin
             serv.POST<bool>("/update_admin_by_id", [sql,log](const HttpContextPtr &ctx){
-                common::access_assert("admin");
+                //common::access_assert("admin");
 
                 admin u;
                 ctx->json().get_to(u);
                 size_t num = mapper::admin_mapper::update_admin_by_id(u,sql,log);
                 return result<bool>::ok(num);
+            });
+
+
+            serv.POST<std::vector<user>>("/list_user_by_page",[sql,log](const HttpContextPtr &ctx){
+                page_request request;
+                ctx->json().get_to(request);
+
+                std::vector<user> res = mapper::mapper::list_entity_by_page<user>(request,sql,log);
+                return result<std::vector<user>>::ok(res);
+
+
             });
 
         }

@@ -7,7 +7,7 @@
 #include "framework/service/user_service.h"
 #include "framework/application.h"
 #include "cppcodec/base64_rfc4648.hpp"
-#include "framework/entity/token.h"
+#include "framework/pojo/token.h"
 #include "common/utils.h"
 
 using namespace common;
@@ -32,11 +32,25 @@ void framework::Router::Register(hv::HttpService &router, Application &app) {
 
     router.AllowCORS();
 
-//    router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
-//        /// cors中间件
-//        ctx->response->headers["Access-Control-Allow-Origin"]="*";
-//        ctx->response->headers["Access-Control-Allow-Headers"]="Content-Type,Access-Token";
-//    });
+    router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
+        /// 接口访问日志打印中间件
+        log->info("/-------------------------\\");
+        log->info("source :{}:{}",ctx->ip(),ctx->port());
+        log->info("method :{}",http_method_str(ctx->method()));
+        log->info("url    :{}",ctx->url());
+        log->info("path   :{}",ctx->path());
+        std::string params;
+        std::for_each(ctx->params().begin(), ctx->params().end(),[&params](const auto&val){
+            params += fmt::format("{}={};",val.first,val.second);
+        });
+        log->info("params :{}",params);
+        log->info("body   :{}",to_string(ctx->json()));
+        log->info("username:{}",local_map::local()["username"]);
+        log->info("usertype:{}",local_map::local()["usertype"]);
+        log->info("\\________________________/");
+
+        return HTTP_STATUS_NEXT;
+    });
 
     router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
         /// token 认证中间件S
@@ -67,25 +81,7 @@ void framework::Router::Register(hv::HttpService &router, Application &app) {
     });
 
 
-    router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
-        /// 接口访问日志打印中间件
-        log->info("/-------------------------\\");
-        log->info("source :{}:{}",ctx->ip(),ctx->port());
-        log->info("method :{}",http_method_str(ctx->method()));
-        log->info("url    :{}",ctx->url());
-        log->info("path   :{}",ctx->path());
-        std::string params;
-        std::for_each(ctx->params().begin(), ctx->params().end(),[&params](const auto&val){
-            params += fmt::format("{}={};",val.first,val.second);
-        });
-        log->info("params :{}",params);
-        log->info("body   :{}",to_string(ctx->json()));
-        log->info("username:{}",local_map::local()["username"]);
-        log->info("usertype:{}",local_map::local()["usertype"]);
-        log->info("\\________________________/");
 
-        return HTTP_STATUS_NEXT;
-    });
 
 
 }
