@@ -1,10 +1,12 @@
 <script setup>
 import {reactive} from "vue";
 import FormInput from "@/components/FormInput.vue";
+import request from "@/request.js";
+import router from "@/router.js";
+import {message} from "ant-design-vue";
 
 const userInfo = reactive({
-  username:'',
-  age:0
+  username:''
 })
 
 const userColumns = [
@@ -14,15 +16,24 @@ const userColumns = [
     dataIndex: 'username',
     key: 'username',
     required: true
-  },
-  {
-    label:'年龄',
-    type: 'number',
-    dataIndex: 'age',
-    key: 'age',
-    required: false
   }
 ]
+
+const onAddUser = async user =>{
+  let res = await request.post("/add_user",user)
+  if(res&&res.data['is_success']){
+    message.info("创建成功")
+    await router.push("/page/user")
+  } else
+  {
+    message.error("创建失败")
+  }
+}
+
+const onCancel = () =>{
+  router.back()
+}
+
 
 </script>
 
@@ -31,8 +42,8 @@ const userColumns = [
     <FormInput :form-data="userInfo" :columns="userColumns">
       <template #footer>
         <div class="flex">
-          <a-button type="primary">提交</a-button>
-          <a-button type="dashed" style="background-color: red;color: white">取消</a-button>
+          <a-button type="primary" @click="onAddUser(userInfo)">提交</a-button>
+          <a-button type="dashed" style="background-color: red;color: white" @click="onCancel">取消</a-button>
         </div>
       </template>
     </FormInput>

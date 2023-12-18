@@ -5,11 +5,8 @@ class LocalCache {
     }
     // 查找
     getCache(key) {
-        // obj=>sting=>obj
         const value = window.localStorage.getItem(key)
-        if (value) {
-            return JSON.parse(value)
-        }
+        return value ? JSON.parse(value) : null
     }
     // 删除
     deleteCache(key) {

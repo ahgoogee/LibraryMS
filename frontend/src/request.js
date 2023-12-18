@@ -24,6 +24,10 @@ instance.interceptors.request.use(
         if(token){
             config.headers.set("Token",token)
         }
+        else {
+            if(router.currentRoute.value.path !== '/login')
+                router.push("/login").then()
+        }
 
         return config
     },
@@ -59,25 +63,32 @@ const handleData = async response=>{
             break;
     }
 
+    message.error(response.statusText)
 
-
-    return {data:{is_success:false}};
+    return null;
 }
 
 function handleError (error) {
     return error
 }
 
-const post = (url, data) => {
+const post = async (url, data) => {
     return instance
         .post(generateUrl(url), data)
         .catch(handleError)
 }
-
+const get = async (url, param) => {
+    return instance
+        .get(generateUrl(url),{
+            params:param
+        } )
+        .catch(handleError)
+}
 
 
 export default {
-    post
+    post,
+    get
 }
 
 
