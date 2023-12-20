@@ -14,7 +14,7 @@ namespace framework::entity{
 
     public:
         token() = default;
-        token(db_bigint userId, const db_varchar &username, const std::string &usertype)
+        token(common::type::db_bigint userId, const common::type::db_varchar &username, const std::string &usertype)
         : user_id(userId),
         username(username),
         usertype(usertype)

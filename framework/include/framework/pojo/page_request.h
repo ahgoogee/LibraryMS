@@ -33,6 +33,22 @@ namespace framework::entity{
                                fmt::format("limit {}",page.to_sql()));
         }
 
+        std::string to_count_sql() const&{
+            std::vector<std::string> filter_sql_vec;
+            std::for_each(filters.begin(), filters.end(),[&filter_sql_vec](const filter& val){
+                filter_sql_vec.push_back(val.to_sql());
+            });
+
+            std::vector<std::string> sort_sql_vec;
+            std::for_each(sorts.begin(), sorts.end(),[&sort_sql_vec](const sort& val){
+                sort_sql_vec.push_back(val.to_sql());
+            });
+
+            return fmt::format("{} {}",
+                               filter_sql_vec.empty() ? "": fmt::format("where {}", common::join(" and ",filter_sql_vec)),
+                               sort_sql_vec.empty() ? "" : fmt::format("order by {}", common::join(", ",sort_sql_vec)));
+        }
+
         friend void to_json(hv::Json& j, const page_request& t) {
             j = hv::Json{
                     {"page",t.page},

@@ -4,18 +4,15 @@
 
 #pragma once
 
-#include "vector"
 #include "framework/service/service.h"
-#include "framework/entity/user.h"
 #include "framework/application.h"
-#include "soci/soci.h"
-#include "soci/mysql/soci-mysql.h"
-#include "framework/mapper/user_mapper.h"
+#include "framework/common/access_assert.h"
 #include "framework/common/runtime_exception.h"
 #include "framework/pojo/token.h"
 #include "framework/mapper/mapper.h"
+#include "framework/mapper/user_mapper.h"
 #include "framework/mapper/admin_mapper.h"
-#include "framework/common/access_assert.h"
+
 
 namespace framework::service{
     using namespace entity;
@@ -199,8 +196,29 @@ namespace framework::service{
 
                 std::vector<user> res = mapper::mapper::list_entity_by_page<user>(request,sql,log);
                 return result<std::vector<user>>::ok(res);
+            });
+            serv.POST<size_t>("/count_user_by_page",[sql,log](const HttpContextPtr &ctx){
+                page_request request;
+                ctx->json().get_to(request);
+
+                size_t res = mapper::mapper::count_entity_by_page<user>(request,sql,log);
+                return result<size_t>::ok(res);
+            });
 
 
+            serv.POST<std::vector<admin>>("/list_admin_by_page",[sql,log](const HttpContextPtr &ctx){
+                page_request request;
+                ctx->json().get_to(request);
+
+                std::vector<admin> res = mapper::mapper::list_entity_by_page<admin>(request,sql,log);
+                return result<std::vector<admin>>::ok(res);
+            });
+            serv.POST<size_t>("/count_admin_by_page",[sql,log](const HttpContextPtr &ctx){
+                page_request request;
+                ctx->json().get_to(request);
+
+                size_t res = mapper::mapper::count_entity_by_page<admin>(request,sql,log);
+                return result<size_t>::ok(res);
             });
 
         }

@@ -5,10 +5,14 @@
 #include "framework/router.h"
 #include "hv/hasync.h"
 #include "framework/service/user_service.h"
+#include "framework/service/type_service.h"
 #include "framework/application.h"
 #include "cppcodec/base64_rfc4648.hpp"
 #include "framework/pojo/token.h"
 #include "common/utils.h"
+#include "framework/service/book_service.h"
+#include "framework/service/record_service.h"
+
 
 using namespace common;
 
@@ -29,6 +33,9 @@ void framework::Router::Register(hv::HttpService &router, Application &app) {
 
 
     service::user_service::register_service(router, app);
+    service::type_service::register_service(router, app);
+    service::book_service::register_service(router, app);
+    service::record_service::register_service(router, app);
 
     router.AllowCORS();
 

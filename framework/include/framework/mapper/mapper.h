@@ -88,6 +88,21 @@ namespace framework::mapper{
 
             return vec;
         }
+
+        template<class E>
+        static size_t count_entity_by_page(entity::page_request request,const type::dbsession_ptr& sql,const common::logger_ptr& log){
+            size_t count;
+            try{
+                std::string page_sql = request.to_count_sql();
+                log->debug("list_entity_by_page[count_page_sql]:{}",page_sql);
+
+                *sql << fmt::format("select count(*) from {} {}", E::table_name,page_sql),soci::into(count);
+            }catch (const std::exception& e){
+                log->error("sql select error:{}",e.what());
+            }
+
+            return count;
+        }
     };
 
 
