@@ -1,15 +1,33 @@
 <script setup>
 import {ReadOutlined} from "@ant-design/icons-vue";
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
+import cache from "@/common/cache.js";
+import router from "@/router.js";
+import request from "@/request.js";
 
 const userInfo = reactive({
-  username: 'ahgoogee',
-  usertype: 'user',
+  username: '',
+  usertype: '',
+})
+
+onMounted( async ()=>{
+  userInfo.username = cache.getCache("username")
+  userInfo.usertype = cache.getCache("usertype")
+  if(userInfo.usertype === 'user'){
+    let res = await request.get("/get_user_by_username",{username:userInfo.username})
+    if(res && res.data['is_success']){
+      cache.setCache("user_id",res.data['data']['id'])
+    }
+  }
 
 })
 
+
 const logout = ()=>{
-  console.log("logout")
+  cache.setCache("Token","")
+  cache.setCache("username","")
+  cache.setCache("usertype","")
+  router.push("/login").then()
 }
 </script>
 
@@ -27,7 +45,6 @@ const logout = ()=>{
       <div style="margin-right: 20px">{{userInfo.usertype}}</div>
       <a-popover :title="userInfo.username" placement="bottomLeft">
         <template #content>
-          <p>userinfo</p>
           <a-button type="primary" @click="logout">注销</a-button>
         </template>
         <ReadOutlined/>

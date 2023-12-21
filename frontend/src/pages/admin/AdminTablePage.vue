@@ -45,8 +45,6 @@ const userColumns = ref([
     canFilter:true,
     editState:false,
     searchContent:'',
-
-
   },
   {
     title: '操作',
@@ -56,7 +54,7 @@ const userColumns = ref([
 ])
 
 const onUpdateTable = async r => {
-  let res = await request.post("/list_user_by_page", r)
+  let res = await request.post("/list_admin_by_page", r)
   if (res && res.data['is_success']) {
     dataSource.value = res.data.data
   } else {
@@ -65,17 +63,17 @@ const onUpdateTable = async r => {
 }
 
 const onCountUser = async r =>{
-  let res = await request.post("/count_user_by_page", r)
+  let res = await request.post("/count_admin_by_page", r)
   total.value = res && res.data['is_success'] ? res.data['data'] : 0
 }
 
 const onAddUser = () => {
-  router.push('/page/user/add')
+  router.push('/page/admin/add')
 }
 
 const onDeleteUser = async row => {
   console.log('user delete',row.id)
-  let res = await request.get("/delete_user_by_id",{id:row.id})
+  let res = await request.get("/delete_admin_by_id",{id:row.id})
   if(res && res.data['is_success'] && res.data['data']){
     message.info("成功删除用户",row)
     await onUpdateTable(pageRequest)
@@ -86,7 +84,7 @@ const onDeleteUser = async row => {
 }
 
 const onUpdateUser = async row =>{
-  let res = await request.post("/update_user_by_id",row)
+  let res = await request.post("/update_admin_by_id",row)
   if(res && res.data['is_success'] && res.data['data']){
     message.info("成功更新用户",row)
     await onUpdateTable(pageRequest)
@@ -110,7 +108,7 @@ const onUpdateUser = async row =>{
   >
     <template #header>
       <div>
-        <a-button @click="onAddUser">创建用户</a-button>
+        <a-button @click="onAddUser">创建管理员</a-button>
       </div>
     </template>
   </data-table-template>

@@ -1,12 +1,17 @@
 <script setup>
-defineProps({
+const props = defineProps({
   formData: Object,
   columns: Object
 })
+const emits = defineEmits([
+    'onSubmit',
+    'onCancel'
+])
+
 </script>
 
 <template>
-  <div class="fi-body-box ">
+  <div class="fi-body-box">
     <a-form class="flex align-center column" :model="formData">
       <a-form-item v-for="column in columns" :key="column.key" :name="column.key" :required="column.required" :label="column.label">
         <template v-if="column.type === 'string'">
@@ -21,9 +26,22 @@ defineProps({
         <template v-else-if="column.type === 'bool'">
           <a-switch v-model:checked="formData[column.dataIndex]" />
         </template>
+        <template v-else-if="column.type === 'select'">
+          <a-select v-model:value="formData[column.dataIndex]" >
+            <a-select-option v-for="option in column.options" :value="option">{{option}}</a-select-option>
+          </a-select>
+        </template>
+        <slot v-else-if="column.type === 'other'"
+              name="otherInputType"
+              :column="column"
+              :form="formData"
+        />
       </a-form-item>
 
-      <slot name="footer"></slot>
+      <div class="flex">
+        <a-button type="primary" @click="emits('onSubmit',props.formData)">提交</a-button>
+        <a-button type="dashed" style="background-color: red;color: white" @click="emits('onCancel')">取消</a-button>
+      </div>
     </a-form>
   </div>
 </template>

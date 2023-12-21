@@ -52,7 +52,7 @@
         登录
       </a-button>
       或
-      <a href="">注册</a>
+      <router-link to="/register">注册</router-link>
     </a-form-item>
   </a-form>
 </template>
@@ -79,7 +79,9 @@ const onLogin = async values => {
   })
   if(res.data['is_success']) {
     cache.setCache("Token", res.data['data'])
-    await router.push("/page/user")
+    cache.setCache("username", values['username'])
+    cache.setCache("usertype", values['usertype'])
+    await router.push("/page/book")
   }
   else {
     message.error(res.data['msg']);
@@ -93,17 +95,14 @@ const onLoginFailed = errorInfo => {
 const onRegister = ()=>{
 
 }
-const onForgotPassword = ()=>{
 
-}
 onBeforeMount(()=>{
-  // let usertype = cache.getCache("userType")
-  // let token = cache.getCache("Token")
-  // if(usertype&&token){
-  //   //用户已登录
-  //
-  //   router.push("/hello")
-  // }
+  let usertype = cache.getCache("usertype")
+  let token = cache.getCache("Token")
+  if(usertype&&token){
+    //用户已登录
+    router.push("/page/book")
+  }
 })
 
 

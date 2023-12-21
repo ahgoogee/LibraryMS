@@ -157,6 +157,10 @@
   cursor: not-allowed;
 }
 
+.hide{
+  display:none;
+}
+
 .hidden {
   overflow: hidden;
 }

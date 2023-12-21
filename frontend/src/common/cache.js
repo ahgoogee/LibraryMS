@@ -16,6 +16,14 @@ class LocalCache {
     clearCache() {
         window.localStorage.clear()
     }
+
+    isAdmin(){
+       return  this.getCache("usertype") === "admin"
+    }
+
+    isUser(){
+        return  this.getCache("usertype") === "user"
+    }
 }
 
 export default new LocalCache()

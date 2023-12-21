@@ -20,10 +20,10 @@ const userColumns = [
 ]
 
 const onAddUser = async user =>{
-  let res = await request.post("/add_user",user)
+  let res = await request.post("/add_admin",user)
   if(res&&res.data['is_success']){
     message.info("创建成功")
-    await router.push("/page/user")
+    await router.push("/page/admin")
   } else
   {
     message.error("创建失败")

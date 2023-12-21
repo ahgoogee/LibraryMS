@@ -1,48 +1,77 @@
 <script setup>
-import {h, ref} from "vue";
+import {h, onMounted, ref} from "vue";
 import {AppstoreOutlined, MailOutlined} from "@ant-design/icons-vue";
 import router from "@/router.js"
+import cache from "@/common/cache.js";
 
-const searchContent = ref("")
-const current = ref(['book'])
-const items = ref([
-  {
-    key: 'user',
-    icon: () => h(MailOutlined),
-    label: '用户管理',
-    title: '用户管理',
-    path: '/user'
-  },
-  {
-    key: 'book',
-    icon: () => h(AppstoreOutlined),
-    label: '图书管理',
-    title: '图书管理',
-    path: '/book'
-  },
-  {
-    key: 'type',
-    icon: () => h(AppstoreOutlined),
-    label: '分类管理',
-    title: '分类管理',
-    path: '/type'
-  },
-  {
-    key: 'record',
-    icon: () => h(AppstoreOutlined),
-    label: '借阅管理',
-    title: '借阅管理',
-    path: '/record'
-  },
-])
+const current = ref([router.currentRoute.value.fullPath.match(/(?<=\/page\/)([a-zA-Z]+)+(?=\/[a-zA-Z]+)/g).at(0)])
+const items = ref([])
+
+onMounted(()=>{
+  if(cache.isAdmin()){
+    items.value.push(
+        {
+          key: 'book',
+          icon: () => h(AppstoreOutlined),
+          label: '图书管理',
+          title: '图书管理',
+          path: '/book'
+        },
+        {
+          key: 'type',
+          icon: () => h(AppstoreOutlined),
+          label: '分类管理',
+          title: '分类管理',
+          path: '/type'
+        },
+        {
+          key: 'record',
+          icon: () => h(AppstoreOutlined),
+          label: '借阅管理',
+          title: '借阅管理',
+          path: '/record'
+        },
+        {
+          key: 'user',
+          icon: () => h(MailOutlined),
+          label: '用户管理',
+          title: '用户管理',
+          path: '/user'
+        },
+        {
+          key: 'admin',
+          icon: () => h(MailOutlined),
+          label: '管理员管理',
+          title: '管理员管理',
+          path: '/admin'
+        },
+
+    )
+  }
+  else {
+    items.value.push(
+        {
+          key: 'book',
+          icon: () => h(AppstoreOutlined),
+          label: '图书管理',
+          title: '图书管理',
+          path: '/book'
+        },
+        {
+          key: 'record',
+          icon: () => h(AppstoreOutlined),
+          label: '借阅管理',
+          title: '借阅管理',
+          path: '/record'
+        },
+    )
+  }
+})
 
 
-const onSearch= ()=>{
-
-}
 const onChange= ({item,key,keyPath})=>{
   let target = "/page" + item.path
-  console.log(target)
+  console.log(current.value)
   router.push(target)
 }
 
@@ -50,13 +79,11 @@ const onChange= ({item,key,keyPath})=>{
 
 <template>
   <div class="n-navigation-box flex">
-    <a-input-search
-        v-model:value="searchContent"
-        placeholder="input search text"
-        style="width: 200px"
-        @search="onSearch"
-    />
-    <a-menu v-model:selectedKeys="current" mode="horizontal" :items="items" @click="onChange" />
+    <a-menu
+        v-model:selectedKeys="current"
+        mode="horizontal"
+        :items="items"
+        @click="onChange" />
   </div>
 </template>
 
