@@ -30,6 +30,16 @@ namespace framework::service{
                 return result<db_bigint>::ok(id);
             });
 
+            serv.POST<std::vector<book>>("/list_book_by_id_list",[sql,log](const HttpContextPtr &ctx){
+                std::vector<db_bigint> id_list;
+                auto j = ctx->json();
+                j.at("id_list").get_to(id_list);
+
+                std::vector<book> vec = mapper::mapper::list_entity_by_id_list<book>(id_list,sql,log);
+                return result<std::vector<book>>::ok(vec);
+
+            });
+
             serv.GET<std::vector<book>>("/list_book", [sql,log](const HttpContextPtr &ctx){
                 std::vector<book> vec = framework::mapper::mapper::list_all_entity<book>(sql,log);
                 return result<std::vector<book>>::ok(vec);

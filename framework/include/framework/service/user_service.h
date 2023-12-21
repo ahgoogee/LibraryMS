@@ -97,10 +97,31 @@ namespace framework::service{
                 throw runtime_exception(403,"创建失败");
             });
 
+            serv.POST<std::vector<user>>("/list_user_by_id_list",[sql,log](const HttpContextPtr &ctx){
+                std::vector<db_bigint> id_list;
+                auto j = ctx->json();
+                j.at("id_list").get_to(id_list);
+
+                std::vector<user> users = mapper::mapper::list_entity_by_id_list<user>(id_list,sql,log);
+                return result<std::vector<user>>::ok(users);
+
+            });
+
+            serv.POST<std::vector<admin>>("/list_admin_by_id_list",[sql,log](const HttpContextPtr &ctx){
+                std::vector<db_bigint> id_list;
+                auto j = ctx->json();
+                j.at("id_list").get_to(id_list);
+
+                std::vector<admin> vec = mapper::mapper::list_entity_by_id_list<admin>(id_list,sql,log);
+                return result<std::vector<admin>>::ok(vec);
+
+            });
+
             serv.POST<db_bigint>("/add_user", [sql,log](const HttpContextPtr &ctx){
                 user_ro u;
                 auto j = ctx->json();
                 j.at("username").get_to(u.username);
+
 
                 db_bigint id = mapper::user_mapper::add_user(u,sql,log);
                 return result<db_bigint>::ok(id);
@@ -129,6 +150,36 @@ namespace framework::service{
 
                 std::vector<admin> vec = mapper::mapper::list_all_entity<admin>(sql,log);
                 return result<std::vector<admin>>::ok(vec);
+            });
+
+            serv.GET<user>("/get_user_by_username", [sql,log](const HttpContextPtr &ctx){
+                if(ctx->param("username").empty()) throw runtime_exception{403,"username错误"};
+                std::string username = ctx->param("username");
+
+                user u;
+                try{
+                    *sql << fmt::format("select * from {} where {}='{}' limit 1", user::table_name,user::username_name,username)
+                    ,soci::into(u);
+
+                }catch (const std::exception& e){
+                    log->error("sql select error:{}",e.what());
+                }
+                return result<user>::ok(u);
+            });
+
+            serv.GET<admin>("/get_admin_by_username", [sql,log](const HttpContextPtr &ctx){
+                if(ctx->param("username").empty()) throw runtime_exception{403,"username错误"};
+                std::string username = ctx->param("username");
+
+                admin u;
+                try{
+                    *sql << fmt::format("select * from {} where {}='{}' limit 1", admin::table_name,admin::username_name,username)
+                            ,soci::into(u);
+
+                }catch (const std::exception& e){
+                    log->error("sql select error:{}",e.what());
+                }
+                return result<admin>::ok(u);
             });
 
             serv.GET<user>("/get_user_by_id", [sql,log](const HttpContextPtr &ctx){

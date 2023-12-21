@@ -19,7 +19,6 @@ namespace framework::mapper {
     public:
         static db_bigint borrow_to(db_bigint user_id,db_bigint book_id,const dbsession_ptr& sql,const common::logger_ptr& log){
             std::tm stop = mapper::now();
-            hv_delay(50);
             std::tm now = mapper::now();
 
             try{
@@ -44,6 +43,7 @@ namespace framework::mapper {
             }catch (const std::exception& e){
                 log->error("sql insert error:{}",e.what());
             }
+            return 0;
         }
 
         static bool give_back(db_bigint record_id,const dbsession_ptr& sql,const common::logger_ptr& log){
@@ -60,12 +60,15 @@ namespace framework::mapper {
 
                 //修改图书状态
                 auto r = mapper::get_entity_by_id<record>(record_id,sql,log);
-                book_mapper::update_book_borrow_state_by_id(r.user_id,"not borrowed", sql,log);
+                log->debug("get record entity:{}",to_string(hv::Json {r}));
+                book_mapper::update_book_borrow_state_by_id(r.book_id,"not borrowed", sql,log);
 
                 return st.get_affected_rows();
             }catch (const std::exception& e){
                 log->error("sql update error:{}",e.what());
             }
+
+            return false;
         }
 
 

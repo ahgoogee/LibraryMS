@@ -25,7 +25,7 @@ namespace framework::entity{
                     {book_type::name_name, t.name},
                     {book_type::level_name, t.level},
                     {book_type::parent_id_name,t.parent_id},
-                    {book_type::creation_time_name,to_string(t.creation_time)  },
+                    {book_type::creation_time_name,to_string(t.creation_time)},
             };
         }
         friend void from_json(const hv::Json& j, book_type& t) {
@@ -45,15 +45,15 @@ namespace framework::entity{
 
         friend void to_json(hv::Json& j, const type_ro& t) {
             j = hv::Json{
-                    {book_type::name_name, t.name},
-                    {book_type::level_name, t.level},
-                    {book_type::parent_id_name,t.parent_id},
+                    {type_ro::name_name, t.name},
+                    {type_ro::level_name, t.level},
+                    {type_ro::parent_id_name, t.parent_id},
             };
         }
         friend void from_json(const hv::Json& j, type_ro& t) {
-            j.at(book_type::name_name).get_to(t.name);
-            j.at(book_type::level_name).get_to(t.level);
-            j.at(book_type::parent_id_name).get_to(t.parent_id);
+            j.at(type_ro::name_name).get_to(t.name);
+            j.at(type_ro::level_name).get_to(t.level);
+            j.at(type_ro::parent_id_name).get_to(t.parent_id);
         }
     };
 }

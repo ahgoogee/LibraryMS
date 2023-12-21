@@ -23,10 +23,10 @@ namespace framework::service {
             std::shared_ptr<soci::session> sql = app.sql;
 
             serv.GET<db_bigint>("/borrow_to",[sql,log](const HttpContextPtr &ctx){
-                if(ctx->param("user_id").empty()) throw runtime_exception{403,"user_id错误"};
+                if(local_map::local()["user_id"].empty()) throw runtime_exception{403,"user_id错误"};
                 if(ctx->param("book_id").empty()) throw runtime_exception{403,"book_id错误"};
 
-                int uid = stoi(ctx->param("user_id"));
+                int uid = stoi(local_map::local()["user_id"]);
                 int bid = stoi(ctx->param("book_id"));
 
                 auto id = mapper::record_mapper::borrow_to(uid,bid,sql,log);
@@ -40,6 +40,16 @@ namespace framework::service {
 
                 auto num = mapper::record_mapper::give_back(rid,sql,log);
                 return result<bool>::ok(num);
+            });
+
+            serv.POST<std::vector<record>>("/list_record_by_id_list",[sql,log](const HttpContextPtr &ctx){
+                std::vector<db_bigint> id_list;
+                auto j = ctx->json();
+                j.at("id_list").get_to(id_list);
+
+                std::vector<record> vec = mapper::mapper::list_entity_by_id_list<record>(id_list,sql,log);
+                return result<std::vector<record>>::ok(vec);
+
             });
 
             serv.GET<std::vector<record>>("/list_record", [sql,log](const HttpContextPtr &ctx){
