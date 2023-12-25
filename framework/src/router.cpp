@@ -5,10 +5,14 @@
 #include "framework/router.h"
 #include "hv/hasync.h"
 #include "framework/service/user_service.h"
+#include "framework/service/type_service.h"
 #include "framework/application.h"
 #include "cppcodec/base64_rfc4648.hpp"
-#include "framework/entity/token.h"
+#include "framework/pojo/token.h"
 #include "common/utils.h"
+#include "framework/service/book_service.h"
+#include "framework/service/record_service.h"
+
 
 using namespace common;
 
@@ -16,27 +20,24 @@ void framework::Router::Register(hv::HttpService &router, Application &app) {
     common::logger_ptr log = app.log;
     type::dbsession_ptr sql = app.sql;
 
-    /**
-     *  /echo
-     *  原样返回http请求body
-     * */
-    router.POST("/echo", [](const HttpContextPtr& ctx) {
-        hv::async([ctx](){
-            return ctx->send(ctx->body(), ctx->type());
-        });
-        return 0;
-    });
+//    /**
+//     *  /echo
+//     *  原样返回http请求body
+//     * */
+//    router.POST("/echo", [](const HttpContextPtr& ctx) {
+//        hv::async([ctx](){
+//            return ctx->send(ctx->body(), ctx->type());
+//        });
+//        return 0;
+//    });
 
 
     service::user_service::register_service(router, app);
+    service::type_service::register_service(router, app);
+    service::book_service::register_service(router, app);
+    service::record_service::register_service(router, app);
 
     router.AllowCORS();
-
-//    router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
-//        /// cors中间件
-//        ctx->response->headers["Access-Control-Allow-Origin"]="*";
-//        ctx->response->headers["Access-Control-Allow-Headers"]="Content-Type,Access-Token";
-//    });
 
     router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
         /// token 认证中间件S
@@ -66,7 +67,6 @@ void framework::Router::Register(hv::HttpService &router, Application &app) {
         return HTTP_STATUS_NEXT;
     });
 
-
     router.middleware.emplace_back([log](const HttpContextPtr & ctx)->int{
         /// 接口访问日志打印中间件
         log->info("/-------------------------\\");
@@ -86,6 +86,7 @@ void framework::Router::Register(hv::HttpService &router, Application &app) {
 
         return HTTP_STATUS_NEXT;
     });
+
 
 
 }

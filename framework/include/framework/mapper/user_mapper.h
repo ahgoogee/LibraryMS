@@ -9,7 +9,7 @@
 #include "algorithm"
 #include "framework/entity/admin.h"
 #include "cppcodec/base64_rfc4648.hpp"
-#include "framework/entity/token.h"
+#include "framework/pojo/token.h"
 #include "mapper.h"
 
 namespace framework::mapper{

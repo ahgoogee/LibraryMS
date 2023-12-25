@@ -7,6 +7,7 @@
 #include "framework/common/types.h"
 #include "common/logger.h"
 #include "framework/common/runtime_exception.h"
+#include "framework/pojo/page_request.h"
 
 namespace framework::mapper{
     using namespace common;
@@ -65,10 +66,66 @@ namespace framework::mapper{
             return vec;
         }
 
+        template<class E>
+        static std::vector<E> list_entity_by_id_list(std::vector<type::db_bigint> id_list, const type::dbsession_ptr& sql,const common::logger_ptr& log){
+            std::vector<E> vec;
+            std::vector<std::string> id_string_list;
+            std::for_each(id_list.begin(), id_list.end(),[&id_string_list](type::db_bigint id){
+                id_string_list.push_back(fmt::format("{}",id));
+            });
+            try{
+                std::string sql_string = fmt::format("select * from {0} where {1} in ({2})", E::table_name
+                        ,E::pk_name
+                        ,common::join(",",id_string_list)
+                );
+                log->debug("list_entity_by_id_list:sql_string:{}", sql_string);
+                soci::rowset<E> rs = (sql->prepare << sql_string);
+                std::for_each(rs.begin(), rs.end(),[&vec](const E& row){
+                    vec.push_back(row);
+                });
+            }catch (const std::exception& e){
+                log->error("sql select error:{}",e.what());
+            }
+            return vec;
+        }
+
+
         static std::tm now(){
             std::time_t currentTime = std::time(nullptr);
             std::tm* localTime = std::localtime(&currentTime);
             return {*localTime};
+        }
+
+        template<class E>
+        static std::vector<E> list_entity_by_page(entity::page_request request,const type::dbsession_ptr& sql,const common::logger_ptr& log){
+            std::vector<E> vec;
+            try{
+                std::string page_sql = request.to_sql();
+                log->debug("list_entity_by_page[page_sql]:{}",page_sql);
+                soci::rowset<E> rs = (sql->prepare << fmt::format("select * from {} {}", E::table_name,page_sql));
+                std::for_each(rs.begin(), rs.end(),[&vec](const E& row){
+                    vec.push_back(row);
+                });
+            }catch (const std::exception& e){
+                log->error("sql select error:{}",e.what());
+            }
+
+            return vec;
+        }
+
+        template<class E>
+        static size_t count_entity_by_page(entity::page_request request,const type::dbsession_ptr& sql,const common::logger_ptr& log){
+            size_t count;
+            try{
+                std::string page_sql = request.to_count_sql();
+                log->debug("list_entity_by_page[count_page_sql]:{}",page_sql);
+
+                *sql << fmt::format("select count(*) from {} {}", E::table_name,page_sql),soci::into(count);
+            }catch (const std::exception& e){
+                log->error("sql select error:{}",e.what());
+            }
+
+            return count;
         }
     };
 

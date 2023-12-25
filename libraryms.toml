@@ -9,7 +9,7 @@ user = "root"
 password = "123456"
 
 [backend.logger]
-log_level = "debug" #trace,debug,info,warn,error
+log_level = "trace" #trace,debug,info,warn,error
 enable_file_output = false
 output_directory = "log/"
 output_filename = "libraryms.log"

@@ -15,7 +15,7 @@ namespace framework{
         try{
             m_http_server.run();
         }
-        catch (std::exception e){
+        catch (const std::exception& e){
             log->error(e.what());
         }
     }

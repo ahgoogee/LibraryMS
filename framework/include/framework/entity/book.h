@@ -25,7 +25,7 @@ namespace framework::entity{
                     {book::id_name,b.id},
                     {book::name_name,b.name},
                     {book::description_name,b.description},
-                    {book::image_name,b.image},
+                    //{book::image_name,b.image},
                     {book::type_id_name,b.type_id},
                     {book::borrow_state_name,b.borrow_state},
                     {book::creation_time_name,to_string(b.creation_time)}
@@ -36,12 +36,33 @@ namespace framework::entity{
             j.at("id").get_to(b.id);
             j.at("name").get_to(b.name);
             j.at("description").get_to(b.description);
-            j.at("image").get_to(b.image);
+            //j.at("image").get_to(b.image);
             j.at("type_id").get_to(b.type_id);
             j.at("borrow_state").get_to(b.borrow_state);
             from_string(b.creation_time,j.at(book::creation_time_name).get<std::string>());
         }
 
+
+    };
+
+    struct book_ro{
+        COLUMN(name,db_varchar);
+        COLUMN(description,db_text);
+        COLUMN(type_id,db_bigint);
+
+        friend void to_json(hv::Json &j,const book_ro &b){
+            j = {
+                    {book::name_name,b.name},
+                    {book::description_name,b.description},
+                    {book::type_id_name,b.type_id},
+            };
+        }
+
+        friend void from_json(const hv::Json& j, book_ro& b) {
+            j.at("name").get_to(b.name);
+            j.at("description").get_to(b.description);
+            j.at("type_id").get_to(b.type_id);
+        }
 
     };
 
@@ -58,7 +79,7 @@ namespace soci {
                 b.id = v.get<db_bigint>("id");
                 b.name = v.get<db_varchar>("name");
                 b.description = v.get<db_text>("description");
-                b.image = v.get<db_varchar>("image");
+                //b.image = v.get<db_varchar>("image");
                 b.type_id = v.get<db_bigint>("type_id");
                 b.borrow_state = v.get<db_varchar>("borrow_state");
                 b.creation_time = v.get<db_datetime>(book::creation_time_name);
@@ -69,7 +90,7 @@ namespace soci {
             v.set("id", b.id);
             v.set("name", b.name);
             v.set("description", b.description);
-            v.set("image", b.image);
+            //v.set("image", b.image);
             v.set("type_id", b.type_id);
             v.set("borrow_state", b.borrow_state);
             v.set(book::creation_time_name,b.creation_time);
