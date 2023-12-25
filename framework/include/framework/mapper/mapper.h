@@ -74,10 +74,12 @@ namespace framework::mapper{
                 id_string_list.push_back(fmt::format("{}",id));
             });
             try{
-                soci::rowset<E> rs = (sql->prepare << fmt::format("select * from {0} where {1} in ({2})", E::table_name
-                                                                  ,E::pk_name
-                                                                  ,common::join(",",id_string_list)
-                                                                  ));
+                std::string sql_string = fmt::format("select * from {0} where {1} in ({2})", E::table_name
+                        ,E::pk_name
+                        ,common::join(",",id_string_list)
+                );
+                log->debug("list_entity_by_id_list:sql_string:{}", sql_string);
+                soci::rowset<E> rs = (sql->prepare << sql_string);
                 std::for_each(rs.begin(), rs.end(),[&vec](const E& row){
                     vec.push_back(row);
                 });

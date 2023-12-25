@@ -17,10 +17,10 @@ namespace framework::service {
     class record_service{
     public:
         static void register_service(hv::HttpService &_router,framework::Application& app){
-            service serv(_router);
-
             ::common::logger_ptr log = app.log;
             std::shared_ptr<soci::session> sql = app.sql;
+
+            service serv(_router);
 
             serv.GET<db_bigint>("/borrow_to",[sql,log](const HttpContextPtr &ctx){
                 if(local_map::local()["user_id"].empty()) throw runtime_exception{403,"user_id错误"};

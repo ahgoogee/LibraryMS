@@ -20,10 +20,10 @@ namespace framework::service{
     class user_service{
     public:
         static void register_service(hv::HttpService &_router,framework::Application& app){
-            service serv(_router);
-
             ::common::logger_ptr log = app.log;
             std::shared_ptr<soci::session> sql = app.sql;
+
+            service serv(_router);
 
             serv.POST<std::string>("/login",[sql,log](const HttpContextPtr &ctx){
                 std::string username;

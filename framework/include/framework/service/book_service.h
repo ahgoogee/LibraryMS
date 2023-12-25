@@ -17,10 +17,10 @@ namespace framework::service{
     class book_service{
     public:
         static void register_service(hv::HttpService &_router,framework::Application& app){
-            service serv(_router);
-
             ::common::logger_ptr log = app.log;
             std::shared_ptr<soci::session> sql = app.sql;
+
+            service serv(_router);
 
             serv.POST<db_bigint>("/add_book",[sql,log](const HttpContextPtr &ctx){
                 book_ro t;

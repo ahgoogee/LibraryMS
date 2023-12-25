@@ -4,11 +4,14 @@
 
 #pragma once
 
+#include <utility>
+
 #include "functional"
 #include "hv/HttpServer.h"
 #include "hv/HttpService.h"
 #include "framework/result.h"
 #include "framework/common/runtime_exception.h"
+#include "common/logger.h"
 
 namespace framework::service{
     using namespace common;
@@ -25,13 +28,19 @@ namespace framework::service{
             m_router.Handle(method, path,[processor](const HttpContextPtr& ctx)->int{
                 try{
                     result<RTy> res = processor(ctx);
-                    ctx->sendJson(res.to_json());
+                    auto json = res.to_json();
+                    spdlog::default_logger()->info("response:{}", to_string(json));
+                    ctx->sendJson(json);
                 }catch(const runtime_exception& e){
                     result<void> error{e.code,e.msg,e.is_success};
-                    ctx->sendJson(error.to_json());
+                    auto e_json = error.to_json();
+                    spdlog::default_logger()->info("response:{}", to_string(e_json));
+                    ctx->sendJson(e_json);
                 }catch(const std::exception& e) {
                     result<void> error{40000,fmt::format("未知错误:{}",e.what()),false};
-                    ctx->sendJson(error.to_json());
+                    auto e_json = error.to_json();
+                    spdlog::default_logger()->info("response:{}", to_string(e_json));
+                    ctx->sendJson(e_json);
                 }
 
                 //释放local_map
