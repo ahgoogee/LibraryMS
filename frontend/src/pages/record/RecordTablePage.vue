@@ -102,17 +102,16 @@ const onUpdateTable = async r => {
 
   let res = await request.post("/list_record_by_page", tmp_request)
   if (res && res.data['is_success']) {
-    let id_list = res.data['data'].map(d=>d.id)
-    let user_name_map = await getUserNameMap(id_list)
-    let book_name_map = await getBookNameMap(id_list)
+    let user_name_map = await getUserNameMap(res.data['data'].map(d=>d['user_id']))
+    let book_name_map = await getBookNameMap(res.data['data'].map(d=>d['book_id']))
 
     console.log(user_name_map)
     console.log(book_name_map)
 
     dataSource.value = res.data['data'].map(row=>{
       return {
-        user_name: user_name_map?.[row.id]?.['username']??`user${row.id}`,
-        book_name: book_name_map?.[row.id]?.['name']??`book${row.id}`,
+        user_name: user_name_map?.[row['user_id']]?.['username']??`user${row.id}`,
+        book_name: book_name_map?.[row['book_id']]?.['name']??`book${row.id}`,
         id:row.id,
         state:row['stop_time']>row['creation_time']?"已归还":"未归还",
         state_bool:row['stop_time']>row['creation_time'],

@@ -1,4 +1,4 @@
 export default {
-    "serviceBaseUrl":"http://localhost:8080",
+    "serviceBaseUrl":"http://192.168.124.61:8080",
     "servicePath":""
 }

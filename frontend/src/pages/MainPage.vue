@@ -32,7 +32,7 @@ const onBack = ()=>{
         :title="router.currentRoute.value.name"
         @back="onBack"
     >
-      {{ breadcrumbChainString }}
+      <span style="line-height: 27px;">{{ breadcrumbChainString }}</span>
     </a-page-header>
     <div class="mp-body-box">
       <div class="mp-render-body-box">
@@ -46,19 +46,19 @@ const onBack = ()=>{
 .mp-return-header-box{
   height: 50px !important;
   padding: 0 24px 0 !important;
-  border: solid 2px red;
+  //border: solid 2px red;
   background-color: white;
 }
 
 
 .mp-body-box{
-  background-color: #8f8f8f;
-  padding: 30px 30px 0;
+  background-color: #dfdfdf;
+  padding: 25px 25px 0;
   min-height: calc(100vh - 150px)  ;
 
   .mp-render-body-box{
     position: relative;
-    border: solid 2px greenyellow;
+    //border: solid 2px greenyellow;
     background-color: white;
     border-radius: 20px;
     min-height: calc(100vh - 210px) ;

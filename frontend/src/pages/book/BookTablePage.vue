@@ -232,7 +232,7 @@ const onBorrowTo = async book_id=>{
           @click="onDeleteEntity(record)"
           :class="cache.isUser()? 'hide':''"
       >删除</a-button>
-      <a-button @click="onBorrowTo(record['id'])" >借阅</a-button>
+      <a-button @click="onBorrowTo(record['id'])" :disabled="record['borrow_state'] === 'borrowed'">借阅</a-button>
     </template>
   </data-table-template>
 </template>

@@ -1,10 +1,22 @@
+<template>
+  <div class="n-navigation-box flex">
+    <a-menu
+        v-model:selectedKeys="current"
+        mode="horizontal"
+        :items="items"
+        @click="onChange" />
+  </div>
+</template>
+
+
 <script setup>
 import {h, onMounted, ref} from "vue";
 import {AppstoreOutlined, MailOutlined} from "@ant-design/icons-vue";
 import router from "@/router.js"
 import cache from "@/common/cache.js";
 
-const current = ref([router.currentRoute.value.fullPath.match(/(?<=\/page\/)([a-zA-Z]+)+(?=\/[a-zA-Z]+)/g).at(0)])
+//const current = ref([router.currentRoute.value.fullPath.match(/(?<=\/page\/)([a-zA-Z]+)+(?=\/[a-zA-Z]+)/g).at(0)])
+const current = ref(['book'])
 const items = ref([])
 
 onMounted(()=>{
@@ -77,22 +89,15 @@ const onChange= ({item,key,keyPath})=>{
 
 </script>
 
-<template>
-  <div class="n-navigation-box flex">
-    <a-menu
-        v-model:selectedKeys="current"
-        mode="horizontal"
-        :items="items"
-        @click="onChange" />
-  </div>
-</template>
 
 <style scoped>
 .n-navigation-box{
-  padding-left: 50px;
+  padding-left: 20px;
   height: 50px;
   width: 100vw;
-  border: solid 2px #09b6fe;
+  //border: solid 2px #09b6fe;
+  border-top: solid 2px #bfbfbf;
+  border-bottom: solid 2px #bfbfbf;
 
   font-size: 24px;
   line-height: 42px;

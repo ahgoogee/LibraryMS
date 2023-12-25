@@ -1,60 +1,56 @@
 <template>
-  <a-form
-      :model="formState"
-      name="normal_login"
-      class="login-form"
-      @finish="onLogin"
-      @finishFailed="onLoginFailed"
-  >
-    <a-form-item
-        label="用户"
-        name="username"
-        :rules="[{ required: true, message: '请输入用户名!' }]"
+  <div>
+    <h1 style="padding: 15px">登录</h1>
+    <a-form
+        :model="formState"
+        name="normal_login"
+        class="login-form"
+        @finish="onLogin"
+        @finishFailed="onLoginFailed"
     >
-      <a-input v-model:value="formState.username">
-<!--        <template #prefix>-->
-<!--          <UserOutlined class="site-form-item-icon" />-->
-<!--        </template>-->
-      </a-input>
-    </a-form-item>
-
-    <a-form-item
-        label="密码"
-        name="password"
-        :rules="[{ required: true, message: '请输入密码!' }]"
-    >
-      <a-input-password v-model:value="formState.password">
-<!--        <template #prefix>-->
-<!--          <LockOutlined class="site-form-item-icon" />-->
-<!--        </template>-->
-      </a-input-password>
-    </a-form-item>
-
-    <a-form-item
-        label="登录用户"
-        name="usertype"
-    >
-      <a-radio-group v-model:value="formState.usertype">
-        <a-radio value="user">用户</a-radio>
-        <a-radio value="admin">管理员</a-radio>
-      </a-radio-group>
-    </a-form-item>
-
-    <a-form-item>
-      <a-form-item name="remember" no-style>
-        <a-checkbox v-model:checked="formState.remember">记住我</a-checkbox>
+      <a-form-item
+          label="用户"
+          name="username"
+          :rules="[{ required: true, message: '请输入用户名!' }]"
+      >
+        <a-input v-model:value="formState.username" />
       </a-form-item>
-<!--      <a class="login-form-forgot" href="">忘记密码?</a>-->
-    </a-form-item>
 
-    <a-form-item>
-      <a-button :disabled="disabled" type="primary" html-type="submit" class="login-form-button">
-        登录
-      </a-button>
-      或
-      <router-link to="/register">注册</router-link>
-    </a-form-item>
-  </a-form>
+      <a-form-item
+          label="密码"
+          name="password"
+          :rules="[{ required: true, message: '请输入密码!' }]"
+      >
+        <a-input-password v-model:value="formState.password"/>
+      </a-form-item>
+
+      <a-form-item
+          label="登录用户"
+          name="usertype"
+      >
+        <a-radio-group v-model:value="formState.usertype">
+          <a-radio value="user">用户</a-radio>
+          <a-radio value="admin">管理员</a-radio>
+        </a-radio-group>
+      </a-form-item>
+
+      <a-form-item>
+        <a-form-item name="remember" no-style>
+          <a-checkbox v-model:checked="formState.remember">记住我</a-checkbox>
+        </a-form-item>
+        <!--      <a class="login-form-forgot" href="">忘记密码?</a>-->
+      </a-form-item>
+
+      <a-form-item>
+        <a-button :disabled="disabled" type="primary" html-type="submit" class="login-form-button">
+          登录
+        </a-button>
+        或
+        <router-link to="/register">注册</router-link>
+      </a-form-item>
+    </a-form>
+  </div>
+
 </template>
 <script setup>
 import {reactive, computed, onBeforeMount, inject} from 'vue';
@@ -112,6 +108,11 @@ const disabled = computed(() => {
 </script>
 <style scoped lang="less">
 .login-form{
-  border: solid 2px red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid 1px #8c8c8c;
+  padding: 20px;
+  border-radius: 15px;
 }
 </style>

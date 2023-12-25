@@ -92,7 +92,7 @@ const onSubmitEditRecord = async (record)=>{
 
 <template>
   <div class="t-table-box">
-    <slot name="header" />
+    <div class="flex space-end" style="margin: 0 0 10px 0"><slot name="header" /></div>
     <a-table
         :dataSource="props.dataSource"
         :columns="props.columns"
@@ -152,6 +152,7 @@ const onSubmitEditRecord = async (record)=>{
 
 <style scoped lang="less">
   .t-table-box{
-    border: solid 2px red;
+    //border: solid 2px red;
+    padding: 30px 30px 0;
   }
 </style>

@@ -38,7 +38,7 @@ const emits = defineEmits([
         />
       </a-form-item>
 
-      <div class="flex">
+      <div class="flex space-between" style="width: 150px;">
         <a-button type="primary" @click="emits('onSubmit',props.formData)">提交</a-button>
         <a-button type="dashed" style="background-color: red;color: white" @click="emits('onCancel')">取消</a-button>
       </div>
@@ -48,8 +48,8 @@ const emits = defineEmits([
 
 <style scoped lang="less">
 .fi-body-box{
-  border: solid 2px purple;
-  padding: 30px 80px 0;
+  //border: solid 2px purple;
+  padding: 60px 80px 0;
 
 }
 </style>

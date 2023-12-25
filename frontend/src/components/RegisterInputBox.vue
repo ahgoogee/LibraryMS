@@ -29,13 +29,13 @@ const onRegister = async (values)=>{
 
 <template>
   <div>
-    <div>注册</div>
+    <h1 style="padding: 15px">注册</h1>
     <a-form
         :model="form"
         name="normal_register"
         @finish="onRegister"
         @finishFailed=""
-        style="border: solid 2px red;"
+        class="rib-box"
     >
       <a-form-item
           label="用 户"
@@ -75,4 +75,12 @@ const onRegister = async (values)=>{
 </template>
 
 <style scoped lang="less">
+.rib-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid 1px #8c8c8c;
+  padding: 20px;
+  border-radius: 15px;
+}
 </style>
